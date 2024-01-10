@@ -19,12 +19,6 @@ class CleanCommand extends Command
 {
 	private array $logSources = ['database', 'file'];
 
-	public function __construct ()
-	{
-		$this->logProviderFactory = new LogProviderFactory();
-		parent::__construct();
-	}
-
 	/**
 	 * Command handler
 	 * 
@@ -49,7 +43,7 @@ class CleanCommand extends Command
 			$io->error('Invalid date! Use YYYY-MM-DD format.');
 		}
 
-		$logProvider = $this->logProviderFactory->createLogProvider($source);
+		$logProvider = LogProviderFactory::createLogProvider($source);
 
 		$io->writeln(sprintf('Fetching logs older than %s from %s..', $olderThan->format('Y-m-d'), $source));
 
