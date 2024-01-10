@@ -1,8 +1,9 @@
 {
     "name": "dante/log-cleaner",
     "description": "Remove logs older than given date",
-    "type": "project",
+    "type": "library",
     "license": "GPL-3.0",
+    "version": "1.0.0",
     "autoload": {
         "psr-4": {
             "Dante\\LogCleaner\\": "src/"
