@@ -16,6 +16,12 @@ Logs will be loaded from `foobar.log`, where I included some example logs. All o
 
 * {older-than} - date in YYYY-MM-DD format
 
+## Log format
+
+In order to be properly parsed, logs have to follow this format:
+
+`YYYY-MM-DD: {text}`
+
 ## Testing 
 
 `./vendor/bin/phpunit tests`
