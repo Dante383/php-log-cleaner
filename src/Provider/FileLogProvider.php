@@ -3,8 +3,6 @@
 namespace Dante\LogCleaner\Provider;
 use Dante\LogCleaner\Interface\LogProviderInterface;
 
-ini_set("auto_detect_line_endings", true);
-
 class FileLogProvider implements LogProviderInterface
 {
 	public string $filepath = 'foobar.log';
@@ -20,7 +18,7 @@ class FileLogProvider implements LogProviderInterface
 		return $this->handleLogs($this->filepath, $olderThan, $delete=true);
 	}
 
-	private function handleLogs (string $filename, \DateTime $olderThan, bool $delete=false): int
+	public function handleLogs (string $filename, \DateTime $olderThan, bool $delete=false): int
 	{
 		$file = fopen($filename, 'r+');
 		$count = 0;
@@ -50,13 +48,13 @@ class FileLogProvider implements LogProviderInterface
 		return $count;
 	}
 
-	private function getLogDate (string $log): \DateTime
+	public function getLogDate (string $log): \DateTime
 	{
-		$log = str_replace("\r", '', $log); // without this, despite auto_detect_line_endings, PHP fails to read the file on Linux
+		$log = str_replace("\r", '', $log); // without this PHP fails to read the file on Linux
 		return \DateTime::createFromFormat('Y-m-d', explode(':', $log)[0]);
 	}
 
-	private function markLineForRemoval ($file, string $line): void
+	public function markLineForRemoval ($file, string $line): void
 	{
 		$originalPosition = ftell($file);
 		$lineLength = strlen($line);
@@ -67,7 +65,7 @@ class FileLogProvider implements LogProviderInterface
 	    fseek($file, $originalPosition);
 	}
 
-	private function removeMarkedLines ($file): void
+	public function removeMarkedLines ($file): void
 	{
 		rewind($file);
         $output = fopen('php://temp', 'w+');
@@ -84,6 +82,5 @@ class FileLogProvider implements LogProviderInterface
 		stream_copy_to_stream($output, $file);
 
 		fclose($output);
-		fclose($file);
 	}
 }

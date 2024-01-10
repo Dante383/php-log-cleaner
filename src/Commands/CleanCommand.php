@@ -17,7 +17,7 @@ use Dante\LogCleaner\LogProviderFactory;
 )]
 class CleanCommand extends Command 
 {
-	private array $logSources = ['database', 'file'];
+	public array $logSources = ['database', 'file'];
 
 	/**
 	 * Command handler
@@ -35,12 +35,14 @@ class CleanCommand extends Command
 		if (!in_array($source, $this->logSources))
 		{
 			$io->error(sprintf('Invalid log source! Available sources: %s', implode('|', $this->logSources)));
+			return 1;
 		}
 
 		$olderThan = \DateTime::createFromFormat('Y-m-d', $input->getArgument('older-than'));
 		if (!$olderThan)
 		{
 			$io->error('Invalid date! Use YYYY-MM-DD format.');
+			return 1;
 		}
 
 		$logProvider = LogProviderFactory::createLogProvider($source);
