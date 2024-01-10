@@ -8,7 +8,7 @@
 
 ## Usage 
 
-`./vendor/bin/log-cleaner --source {source} {older-than}`
+`./vendor/dante/log-cleaner --source {source} {older-than}`
 
 * {source} - "database" or "file"
 
