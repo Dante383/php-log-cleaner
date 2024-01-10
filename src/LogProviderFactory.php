@@ -8,6 +8,11 @@ use Dante\LogCleaner\Interface\LogProviderInterface;
 
 class LogProviderFactory
 {
+	/* Create log provider based on selected source
+	*
+	* @param string $source 
+	* @return LogProviderInterface
+	*/
 	public static function createLogProvider(string $source): LogProviderInterface
 	{
 		if ($source === 'file')

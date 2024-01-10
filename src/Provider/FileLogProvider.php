@@ -8,16 +8,33 @@ class FileLogProvider implements LogProviderInterface
 	public string $filepath = 'foobar.log';
 	public string $marker = 'DELETE_MARKER';
 
+	/* Compute amount of logs older than $olderThan
+	*
+	* @param \DateTime $olderThan
+	* @return int 
+	*/
 	public function count (\DateTime $olderThan): int
 	{
 		return $this->handleLogs($this->filepath, $olderThan, $delete=false);
 	}
 
+	/* Remove logs older than $olderThan
+	*
+	* @param \DateTime $olderThan
+	* @return int 
+	*/
 	public function remove (\DateTime $olderThan): int
 	{
 		return $this->handleLogs($this->filepath, $olderThan, $delete=true);
 	}
 
+	/* Count and/or delete logs older than $olderThan from resource $filename 
+	*
+	* @param string $filename 
+	* @param \DateTime $olderThan
+	* @param bool $delete
+	* @return int
+	*/
 	public function handleLogs (string $filename, \DateTime $olderThan, bool $delete=false): int
 	{
 		$file = fopen($filename, 'r+');
@@ -48,12 +65,22 @@ class FileLogProvider implements LogProviderInterface
 		return $count;
 	}
 
+	/* Parse log entry and convert date to \DateTime object
+	*
+	* @param string $log
+	* @return \DateTime
+	*/
 	public function getLogDate (string $log): \DateTime
 	{
 		$log = str_replace("\r", '', $log); // without this PHP fails to read the file on Linux
 		return \DateTime::createFromFormat('Y-m-d', explode(':', $log)[0]);
 	}
 
+	/* Mark log line for removal
+	*
+	* @param resource $file 
+	* @param string $line
+	*/
 	public function markLineForRemoval ($file, string $line): void
 	{
 		$originalPosition = ftell($file);
@@ -65,6 +92,11 @@ class FileLogProvider implements LogProviderInterface
 	    fseek($file, $originalPosition);
 	}
 
+	/* Remove marked log lines from file 
+	*
+	* @param string filename
+	* @return void
+	*/
 	public function removeMarkedLines ($file): void
 	{
 		rewind($file);
