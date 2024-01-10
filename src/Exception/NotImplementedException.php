@@ -1,5 +1,5 @@
 <?php 
 
-namespace App\Service\Git\Exception;
+namespace Dante\LogCleaner\Exception;
 
 class NotImplementedException extends \Exception {}

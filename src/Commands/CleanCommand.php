@@ -57,7 +57,8 @@ class CleanCommand extends Command
 
 		if ($io->confirm(sprintf('Fetched %s logs. Do you wish to remove them?', $logCount)))
 		{
-			
+			$deletedCount = $logProvider->remove($olderThan);
+			$io->writeln(sprintf('Removed %s logs', $deletedCount));
 		}
 	
 		return 0;
