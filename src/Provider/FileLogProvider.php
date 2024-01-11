@@ -86,10 +86,10 @@ class FileLogProvider implements LogProviderInterface
 		$originalPosition = ftell($file);
 		$lineLength = strlen($line);
 
-	    // Move the file pointer to the beginning of the line
-	    fseek($file, $originalPosition - $lineLength);
-	    fwrite($file, $this->marker);
-	    fseek($file, $originalPosition);
+		// Move the file pointer to the beginning of the line
+		fseek($file, $originalPosition - $lineLength);
+		fwrite($file, $this->marker);
+		fseek($file, $originalPosition);
 	}
 
 	/* Remove marked log lines from file 
@@ -100,12 +100,12 @@ class FileLogProvider implements LogProviderInterface
 	public function removeMarkedLines ($file): void
 	{
 		rewind($file);
-        $output = fopen('php://temp', 'w+');
+		$output = fopen('php://temp', 'w+');
 
 		while (($line = fgets($file)) !== false) {
 			if (str_starts_with($line, $this->marker) === false) {
-		    	fwrite($output, $line);
-		    }
+				fwrite($output, $line);
+			}
 		}
 		
 		ftruncate($file, 0);
